@@ -354,6 +354,7 @@ public class BSTSet {
     public void printNonRec() {
         if (root == null) {
             System.out.println("The set is empty");
+            return;
         }
 
         MyStack<TNode> s = new MyStack<>();
