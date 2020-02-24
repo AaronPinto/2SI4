@@ -27,14 +27,6 @@ public class MyStack<E> {
         return val;
     }
 
-    public E top() throws EmptyStackException {
-        if (isEmpty()) {
-            throw new EmptyStackException();
-        }
-
-        return top.element;
-    }
-
     public static class StackNode<E> {
         E element;
         StackNode<E> prev;

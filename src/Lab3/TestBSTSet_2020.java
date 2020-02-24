@@ -1,5 +1,9 @@
 package Lab3;
 
+import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
+
 public class TestBSTSet_2020 {
     public static void main(String[] args) {
         int[] d1 = {7, 0, 16, 3, 2, 11, 8, 9, 4}; // no repetitions
@@ -66,6 +70,7 @@ public class TestBSTSet_2020 {
         System.out.println("Test11---remove(v3)--v3 was in the set; it is removed");
         a1 = new BSTSet(d1);
         System.out.println(a1.remove(v3)); // true
+        a1.printBSTSet();
         System.out.println("\n");
 
         System.out.println("Test12---union()---sets with common elements");
@@ -167,5 +172,10 @@ public class TestBSTSet_2020 {
         System.out.println("Print intersection:");
         a4.printBSTSet();
         System.out.println("The height of the intersection is " + a4.height());
+
+        int[] test = new int[4096];
+        Arrays.setAll(test, i -> ThreadLocalRandom.current().nextInt());
+        BSTSet bstSet = new BSTSet(test);
+        System.out.println(bstSet.height());
     }
 }

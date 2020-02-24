@@ -50,7 +50,7 @@ public class BSTSet {
     }
 
     // Merge sort has an O(n log n) time complexity and O(n) space complexity
-    private static int[] mergeSort(int[] list) {
+    private int[] mergeSort(int[] list) {
         if (list.length <= 1) {
             return list;
         }
@@ -79,7 +79,7 @@ public class BSTSet {
         return merge(mergeSort(left), mergeSort(right));
     }
 
-    private static int[] merge(int[] left, int[] right) {
+    private int[] merge(int[] left, int[] right) {
         int[] result = new int[left.length + right.length];
         int i = 0, j = 0, index = 0;
 
@@ -176,36 +176,59 @@ public class BSTSet {
         }
     }
 
-    // Time complexity is O(log n) avg and O(n) worst case, space complexity is O(1)
+    // Time complexity is O(log n) avg and O(n) worst case, space complexity is O(log n)
     public boolean remove(int v) {
         if (root == null) {
             return false;
         }
-        if (root.element == v) {
-            root = null;
+
+        if (isIn(v)) {
+            root = remove(root, v);
             return true;
         }
 
-        TNode temp = root, prev = root;
+        return false;
+    }
 
-        while (temp != null) {
-            if (v < temp.element) {
-                prev = temp;
-                temp = temp.left;
-            } else if (v > temp.element) {
-                prev = temp;
-                temp = temp.right;
-            } else {
-                if (v < prev.element) {
-                    prev.left = null;
-                } else {
-                    prev.right = null;
-                }
-                return true;
-            }
+    // Code from the lecture slides
+    private TNode remove(TNode node, int val) {
+        if (node == null) {
+            return null;
         }
 
-        return false;
+        if (val < node.element) {
+            node.left = remove(node.left, val);
+        } else if (val > node.element) {
+            node.right = remove(node.right, val);
+        } else if (node.left != null && node.right != null) {
+            node.element = findMax(node.left).element;
+            node.left = removeMax(node.left);
+        } else {
+            node = (node.left != null) ? node.left : node.right;
+        }
+
+        return node;
+    }
+
+    // Finds the largest node in the tree with t as it's root and returns it
+    private TNode findMax(TNode t) {
+        TNode temp = t;
+
+        while (temp.right != null) {
+            temp = temp.right;
+        }
+
+        return temp;
+    }
+
+    // Finds the largest node in the tree with t as it's root, removes it and returns the next largest
+    private TNode removeMax(TNode t) {
+        if (t.right == null) {
+            return t.left;
+        }
+
+        t.right = removeMax(t.right);
+        return t;
     }
 
     // Time complexity is O(x log x) where x = n + m because of the constructor, space complexity is O(x)
@@ -227,8 +250,8 @@ public class BSTSet {
         return new BSTSet(merged);
     }
 
-    // Time complexity is O(n) because it goes to every node, space complexity is O(1)
-    private static int flatten(TNode t, int[] array, int idx) {
+    // Time complexity is O(n) because it goes to every node, space complexity is O(log n)
+    private int flatten(TNode t, int[] array, int idx) {
         if (t == null) {
             return idx;
         }
@@ -302,7 +325,7 @@ public class BSTSet {
         return new BSTSet(temp);
     }
 
-    // Time complexity is O(n) because you have to visit every node, space complexity is O(height)
+    // Time complexity is O(n) because you have to visit every node, space complexity is O(log n)
     public int size() {
         return size(root);
     }
@@ -315,7 +338,7 @@ public class BSTSet {
         return size(t.left) + 1 + size(t.right);
     }
 
-    // Time complexity is O(n) because you have to visit every node, space complexity is O(height)
+    // Time complexity is O(n) because you have to visit every node, space complexity is O(log n)
     public int height() {
         if (root == null) {
             return -1;
@@ -332,7 +355,7 @@ public class BSTSet {
         return 1 + Math.max(height(t.left), height(t.right));
     }
 
-    // Time complexity is O(n) because you have to visit every node, space complexity is O(height)
+    // Time complexity is O(n) because you have to visit every node, space complexity is O(log n)
     public void printBSTSet() {
         if (root == null) {
             System.out.println("The set is empty");
@@ -351,6 +374,7 @@ public class BSTSet {
         }
     }
 
+    // Time complexity is O(n) because you have to visit every node, space complexity is O(log n)
     public void printNonRec() {
         if (root == null) {
             System.out.println("The set is empty");
@@ -370,7 +394,7 @@ public class BSTSet {
             }
 
             temp = s.pop();
-            System.out.print(temp.element + " ");
+            System.out.print(" " + temp.element + ", ");
             temp = temp.right;
         }
 

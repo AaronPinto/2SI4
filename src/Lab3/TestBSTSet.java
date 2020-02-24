@@ -55,7 +55,7 @@ public class TestBSTSet {
         b.printBSTSet();
 
         b = new BSTSet(noRepsSorted);
-        System.out.println("Expected value: true, Actual value: " + b.remove(0)); // is in the list
+        System.out.println("Expected value: true, Actual value: " + b.remove(1)); // is in the list
         b.printBSTSet();
 
         b = new BSTSet(noRepsSorted);
